@@ -212,7 +212,7 @@ public class GameScreenGUI implements Screen {
         camera.setToOrtho(false, 1238, 500);
         game.batch = new SpriteBatch();
         gameimage = new Texture("background.png");
-        groundimg = new Texture("ground.png");
+        groundimg = new Texture("groundgametexture.png");
         ltank = new Texture("Frosttank.png");
         rtank = new Texture("toxic.png");
         font = new BitmapFont();
