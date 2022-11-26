@@ -18,19 +18,12 @@ import java.util.ArrayList;
 
         public static int generateY(float x)
         {
+            x=x+55;
             double y = 4.412 * Math.pow((x/247.6),0.5) * Math.pow(((x/247.6) -1),2) * ((x/247.6)-5) * ((x/247.6)-6);
-            if (x < 500)
-            {
-                return (int)y;
-            }
-            else if (x<800 && x >= 500)
-            {
-                return (int)y+30;
-            }
             return (int)y;
-
         }
     }
+
     class Weapon{
     }
 
@@ -57,7 +50,7 @@ import java.util.ArrayList;
     }
     public class GameScreenGUI implements Screen {
 
-//        Texture gameimage;
+        Texture gameimage;
         private final tankstars game;
         private OrthographicCamera camera;
         public PauseMenuGUI pausesc;
@@ -78,7 +71,7 @@ import java.util.ArrayList;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1238, 500);
         game.batch = new SpriteBatch();
-//        gameimage = new Texture("gamegui.png");
+        gameimage = new Texture("background.png");
         groundimg = new Texture("ground.png");
         ltank = new Texture("Frosttank.png");
         rtank = new Texture("toxic.png");
@@ -157,7 +150,7 @@ import java.util.ArrayList;
 
 
         game.batch.begin();
-//        game.batch.draw(gameimage,0,0);
+        game.batch.draw(gameimage,0,0);
         game.batch.draw(ltank,Xidx,Yidx);
         game.batch.draw(groundimg,0,0);
         game.batch.draw(rtank,Xtk,Ytk);
