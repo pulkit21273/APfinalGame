@@ -42,28 +42,28 @@ public class ChooseTank2GUI implements Screen{
         if(Gdx.input.justTouched()){
 //            if (Gdx.input.getX()>=214 && Gdx.input.getX()<=492 && Gdx.input.getY()>=318 && Gdx.input.getY()<=420)
 //            {
-                game.themesound.stop();
-                if (Gdx.input.getX()>=930 && Gdx.input.getX()<=1150 && Gdx.input.getY()>=20 && Gdx.input.getY()<=160)
-                {
-                    Tank t = new Tank("Coalition");
-                    System.out.println("Inside coalition " + t.getName());
-                }
-                if (Gdx.input.getX()>=930 && Gdx.input.getX()<=1150 && Gdx.input.getY()>=175 && Gdx.input.getY()<=320)
-                {
-                    Tank t = new Tank("Frost Tank");
-                    System.out.println("Inside Frost tank " + t.getName());
-                }
-                if (Gdx.input.getX()>=930 && Gdx.input.getX()<=1150 && Gdx.input.getY()>=330 && Gdx.input.getY()<=480)
-                {
-                    Tank t = new Tank("Toxic");
-                    System.out.println("Inside Toxic " + t.getName());
-                }
-
-                ChooseTank2GUI cht2= new ChooseTank2GUI(game);
-                game.setScreen(cht2);
-                GameScreenGUI gamesc = new GameScreenGUI(game);
-                game.setScreen(gamesc);
+            game.themesound.stop();
+            if (Gdx.input.getX()>=930 && Gdx.input.getX()<=1150 && Gdx.input.getY()>=20 && Gdx.input.getY()<=160)
+            {
+                Tank t = new Tank("Coalition");
+                System.out.println("Inside coalition " + t.getName());
             }
+            if (Gdx.input.getX()>=930 && Gdx.input.getX()<=1150 && Gdx.input.getY()>=175 && Gdx.input.getY()<=320)
+            {
+                Tank t = new Tank("Frost Tank");
+                System.out.println("Inside Frost tank " + t.getName());
+            }
+            if (Gdx.input.getX()>=930 && Gdx.input.getX()<=1150 && Gdx.input.getY()>=330 && Gdx.input.getY()<=480)
+            {
+                Tank t = new Tank("Toxic");
+                System.out.println("Inside Toxic " + t.getName());
+            }
+
+//
+            GameScreenGUI gamesc = new GameScreenGUI(game);
+            game.setScreen(gamesc);
+
+        }
 
 //        }
 
