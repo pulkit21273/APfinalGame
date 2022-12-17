@@ -267,34 +267,86 @@ public class GameScreenGUI implements Screen {
 
     }
 
-    @Override
-    public void render(float delta) {
+    public void conductor(){
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 
-        ScreenUtils.clear(0.6f, 0.46f, 0.32f, 0);
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+            if (l.getX() > -20 && l.getFuel() > 0) {
+                l.setX(l.getX() - 3);
+                l.setFuel(l.getFuel() - 1);
+                l.setY(Ground.generateY(l.getX()));
+                l.getTankrectangle().width -= 3;
+                l.getTankrectangle().height = Ground.generateY(l.getTankrectangle().width);
+            }
 
+//            System.out.println(l.getTankrectangle().width);
 
+        }
 
-        game.batch.begin();
-        game.batch.draw(gameimage,0,0);
-        game.batch.draw(ltank,l.getX(),l.getY());
-        game.batch.draw(groundimg,0,0);
-        game.batch.draw(rtank,r.getX(),r.getY());
-        game.batch.draw(firebutton,950,20);
-        game.batch.end();
-
-        //conductGame();
-        if(turn == 1){
-            System.out.println("Hello turn1!");
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            if(l.getFuel()<=0){
 //                font.draw(game.batch,"Empty Fuel",390,480);
 //            }
-                if(l.getX()>-20 && l.getFuel()>0){
-                    l.setX(l.getX()-3);
-                    l.setFuel(l.getFuel()-1);
+//            System.out.println("hello pressed Left");
+            if (l.getX() < 1130 && l.getFuel() > 0) {
+                l.setX(l.getX() + 3);
+                l.setFuel(l.getFuel() - 1);
+                l.setY(Ground.generateY(l.getX()));
+                l.getTankrectangle().width += 3;
+                l.getTankrectangle().height = Ground.generateY(l.getTankrectangle().width);
+//            System.out.println(l.getTankrectangle().width);
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            System.out.println("Left key is pressed");
+            if (r.getX() > -20 && r.getFuel() > 0) {
+                r.setX(r.getX() - 3);
+                r.setFuel(r.getFuel() - 1);
+                r.setY(Ground.generateY(r.getX()));
+                r.getTankrectangle().width -= 3;
+                r.getTankrectangle().height = Ground.generateY(r.getTankrectangle().width);
+            }
+
+
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            System.out.println("Right key is pressed");
+            if (r.getX() < 1130 && r.getFuel() > 0) {
+                r.setX(r.getX() + 3);
+                r.setFuel(r.getFuel() - 1);
+                r.setY(Ground.generateY(r.getX()));
+                r.getTankrectangle().width += 3;
+                r.getTankrectangle().height = Ground.generateY(r.getTankrectangle().width);
+            }
+
+        }
+    }
+
+    @Override
+    public void render(float delta) {
+
+
+
+            ScreenUtils.clear(0.6f, 0.46f, 0.32f, 0);
+            camera.update();
+            game.batch.setProjectionMatrix(camera.combined);
+
+
+            game.batch.begin();
+            game.batch.draw(gameimage, 0, 0);
+            game.batch.draw(ltank, l.getX(), l.getY());
+            game.batch.draw(groundimg, 0, 0);
+            game.batch.draw(rtank, r.getX(), r.getY());
+            game.batch.draw(firebutton, 950, 20);
+
+            game.batch.end();
+
+
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+
+                if (l.getX() > -20 && l.getFuel() > 0) {
+                    l.setX(l.getX() - 3);
+                    l.setFuel(l.getFuel() - 1);
                     l.setY(Ground.generateY(l.getX()));
                     l.getTankrectangle().width -= 3;
                     l.getTankrectangle().height = Ground.generateY(l.getTankrectangle().width);
@@ -304,39 +356,26 @@ public class GameScreenGUI implements Screen {
 
             }
 
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            if(l.getFuel()<=0){
 //                font.draw(game.batch,"Empty Fuel",390,480);
 //            }
 //            System.out.println("hello pressed Left");
-                if(l.getX()<1130 && l.getFuel()>0){
-                    l.setX(l.getX()+3);
-                    l.setFuel(l.getFuel()-1);
+                if (l.getX() < 1130 && l.getFuel() > 0) {
+                    l.setX(l.getX() + 3);
+                    l.setFuel(l.getFuel() - 1);
                     l.setY(Ground.generateY(l.getX()));
                     l.getTankrectangle().width += 3;
                     l.getTankrectangle().height = Ground.generateY(l.getTankrectangle().width);
-//            System.out.println(l.getTankrectangle().width);
+
                 }
             }
-            if(Gdx.input.justTouched()){
-                if (Gdx.input.getX()>=950 && Gdx.input.getX()<=1070 && Gdx.input.getY()>=410 && Gdx.input.getY()<=480){
-                    System.out.println("Fire button is pressed");
-                    l.fire();
-                    //l.setFuel(100);
-                    turn = 2;
-                }
 
-            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 
-
-        }
-        else{
-            System.out.println("Hello turn2!");
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            {
-                if(r.getX()>-20 && r.getFuel()>0){
-                    r.setX(r.getX()-3);
-                    r.setFuel(r.getFuel()-1);
+                if (r.getX() > -20 && r.getFuel() > 0) {
+                    r.setX(r.getX() - 3);
+                    r.setFuel(r.getFuel() - 1);
                     r.setY(Ground.generateY(r.getX()));
                     r.getTankrectangle().width -= 3;
                     r.getTankrectangle().height = Ground.generateY(r.getTankrectangle().width);
@@ -344,44 +383,38 @@ public class GameScreenGUI implements Screen {
 
 
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            {
-                if(r.getX()<1130 && r.getFuel()>0){
-                    r.setX(r.getX()+3);
-                    r.setFuel(r.getFuel()-1);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+
+                if (r.getX() < 1130 && r.getFuel() > 0) {
+                    r.setX(r.getX() + 3);
+                    r.setFuel(r.getFuel() - 1);
                     r.setY(Ground.generateY(r.getX()));
                     r.getTankrectangle().width += 3;
                     r.getTankrectangle().height = Ground.generateY(r.getTankrectangle().width);
                 }
 
             }
-            if(Gdx.input.justTouched()){
-                if (Gdx.input.getX()>=950 && Gdx.input.getX()<=1070 && Gdx.input.getY()>=410 && Gdx.input.getY()<=480){
-                    System.out.println("Fire button is pressed");
-                    r.fire();
-                    //r.setFuel(100);
-                    turn = 1;
 
-                }
+
+           if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+                    //System.out.println("Fire button is pressed");
+                    //r.fire();
+                    //System.out.println("Right tank fuel before: " + r.getFuel());
+                    r.setFuel(100);
+               //System.out.println("Right tank fuel after: " + r.getFuel());
+                    l.setFuel(100);
             }
-        }
-//        if(turn == 1) {
-//            turn = 2;
-//            l.setFuel(100);
-//        }else{
-//            turn = 1;
-//            r.setFuel(100);
-//        }
 
-        if(Gdx.input.justTouched()){
-            if (Gdx.input.getX()>=0 && Gdx.input.getX()<=80 && Gdx.input.getY()>=15 && Gdx.input.getY()<=67)
-                pausesc = new PauseMenuGUI(game);
-            game.setScreen(pausesc);
+
+            if (Gdx.input.justTouched()) {
+                if (Gdx.input.getX() >= 0 && Gdx.input.getX() <= 80 && Gdx.input.getY() >= 15 && Gdx.input.getY() <= 67)
+                    pausesc = new PauseMenuGUI(game);
+                game.setScreen(pausesc);
+            }
+
         }
 
 
-
-    }
 
     @Override
     public void resize(int width, int height) {
