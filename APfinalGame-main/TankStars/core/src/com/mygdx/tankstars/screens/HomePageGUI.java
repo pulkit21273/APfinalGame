@@ -129,8 +129,8 @@ public class HomePageGUI implements Screen, Serializable {
 
         game.themesound = Gdx.audio.newMusic(Gdx.files.internal("mainmusic.mp3"));
 
-//        game.themesound.setLooping(true);
-//        game.themesound.play();
+        game.themesound.setLooping(true);
+        game.themesound.play();
 
     }
     @Override

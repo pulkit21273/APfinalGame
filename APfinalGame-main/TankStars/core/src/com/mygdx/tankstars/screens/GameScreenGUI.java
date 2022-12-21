@@ -37,12 +37,66 @@ class Ground implements Serializable{
         return (int)y;
     }
 }
+class Airdrop extends GameElements implements Collision,Serializable{
 
+    public Texture getDropimg() {
+        return dropimg;
+    }
+
+    public void setDropimg(Texture dropimg) {
+        this.dropimg = dropimg;
+    }
+
+    public Weapon getSpecialweapon() {
+        return specialweapon;
+    }
+
+    public void setSpecialweapon(Weapon specialweapon) {
+        this.specialweapon = specialweapon;
+    }
+
+    private Texture dropimg;
+    private Weapon specialweapon;
+
+    public Airdrop()
+    {
+        specialweapon = new Weapon();
+        specialweapon.setWeaponimg(new Texture("specialball.png"));
+        specialweapon.setDamage(40);
+    }
+    @Override
+    public boolean hasCollided(GameElements T, int dropx, int turn) {
+
+        Tank t = (Tank) T;
+
+//        if (turn == 1) {
+//            System.out.println("drop: "+dropx+" Tank: "+t.getX());
+            if (dropx == t.getX() ) {
+                System.out.println("Chalgya DROP!");
+                specialweapon.setAssociatedtank(t);
+                t.setCurrentweapon(specialweapon);
+                return true;
+            }
+//        }
+//        if (turn == 2) {
+////            System.out.println(dropx);
+////            System.out.println(t.getX());
+//            if (dropx == t.getX()) {
+//                System.out.println("Chalgya DROP!");
+//                specialweapon.setAssociatedtank(t);
+//                t.setCurrentweapon(specialweapon);
+//                return true;
+//            }
+//        }
+        return false;
+    }
+
+}
 class Weapon implements Collision,Serializable{
     transient private Texture weaponimg = new Texture("fireball.png");
     private String name;
     private double maxvelocity = 20;
-    private int damage;
+    private int damage=20;
 
     public void setWeaponimg(Texture weaponimg) {
         this.weaponimg = weaponimg;
@@ -106,7 +160,7 @@ class Weapon implements Collision,Serializable{
                 othertank.setY(Ground.generateY(othertank.getX()));
                 if (othertank.getHealth()>0)
                 {
-                    othertank.setHealth(othertank.getHealth()-20);
+                    othertank.setHealth(othertank.getHealth()-damage);
                 }
 
 
@@ -118,7 +172,7 @@ class Weapon implements Collision,Serializable{
                 othertank.setY(Ground.generateY(othertank.getX()));
                 if (othertank.getHealth()>0)
                 {
-                    othertank.setHealth(othertank.getHealth()-20);
+                    othertank.setHealth(othertank.getHealth()-damage);
                 }
 
                 return true;
@@ -384,6 +438,7 @@ public class GameScreenGUI implements Screen, Serializable {
 //    private ShapeRenderer shape;
     private int i = 0;
     private int flag = 0;
+    private boolean dropflag;
 
     public Texture getGameimage() {
         return gameimage;
@@ -645,7 +700,7 @@ public class GameScreenGUI implements Screen, Serializable {
             game.batch.draw(firebutton, 950, 20);
         }
 
-        if (r.getHealth()==0)
+        if (r.getHealth()<=0)
         {
 
             game.batch.end();
@@ -653,7 +708,7 @@ public class GameScreenGUI implements Screen, Serializable {
             game.setScreen(t);
             game.batch.begin();
         }
-        if (l.getHealth()==0)
+        if (l.getHealth()<=0)
         {
 
             game.batch.end();
@@ -722,7 +777,8 @@ public class GameScreenGUI implements Screen, Serializable {
                     turn = 1;
                 }
             }
-        } else if (turn == 2) {
+        }
+        else if (turn == 2) {
             r.aim2();
             if (r.getHealth()!=0 && l.getHealth()!=0) {
                 game.batch.draw(dot, r.getX() - 20 + 60, r.getCurrentweapon().generateTrajectoryY2(r.getX() - 20 + 60));
@@ -795,6 +851,24 @@ public class GameScreenGUI implements Screen, Serializable {
 
             game.setScreen(pausesc);
             game.batch.begin();
+        }
+        Airdrop drop = new Airdrop();
+        drop.setDropimg(new Texture("airdrop.png"));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T))
+        {
+            dropflag = true;
+
+        }
+        if(dropflag){
+            game.batch.draw(drop.getDropimg(),700,Ground.generateY(700));
+        }
+        if(drop.hasCollided(l,700,1)==true)
+        {
+            dropflag = false;
+        }
+        if(drop.hasCollided(r,700,2)==true)
+        {
+            dropflag = false;
         }
 
         game.batch.end();
