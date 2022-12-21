@@ -1,5 +1,6 @@
 package com.mygdx.tankstars;
 
+import java.io.Serializable;
 import java.util.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
@@ -19,16 +20,42 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.screens.*;
 
 
-public class tankstars extends Game {
+public class tankstars extends Game implements Serializable {
 
-	public SpriteBatch batch;
+	transient public SpriteBatch batch;
 
 	private ChooseTank2GUI choosetank2gui;
+
+	private LoadGame loadgame;
 
 	public GameScreenGUI gamesc;
 	public HomePageGUI homepg;
 
-	public Music themesound;
+	public SpriteBatch getBatch() {
+		return batch;
+	}
+
+	public LoadGame getLoadgame() {
+		return loadgame;
+	}
+
+	public void setLoadgame(LoadGame loadgame) {
+		this.loadgame = loadgame;
+	}
+
+	public void setBatch(SpriteBatch batch) {
+		this.batch = batch;
+	}
+
+	public Music getThemesound() {
+		return themesound;
+	}
+
+	public void setThemesound(Music themesound) {
+		this.themesound = themesound;
+	}
+
+	transient public Music themesound;
 
 	public GameScreenGUI getGamesc() {
 		return gamesc;
@@ -58,6 +85,7 @@ public class tankstars extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		homepg = new HomePageGUI((this));
+		loadgame = new LoadGame(this);
 		setScreen(homepg);
 	}
 

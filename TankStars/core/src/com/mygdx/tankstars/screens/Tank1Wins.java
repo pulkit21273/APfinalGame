@@ -9,11 +9,31 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.tankstars;
 
 public class Tank1Wins implements Screen {
-    Texture img;
+    public Texture getImg() {
+        return img;
+    }
+
+    public void setImg(Texture img) {
+        this.img = img;
+    }
+
+    public tankstars getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    transient private Texture img;
     private final tankstars game;
     private OrthographicCamera camera;
     public Tank1Wins(tankstars game){
-        System.out.println("Hi tank1wins");
+//        System.out.println("Hi tank1wins");
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1238, 500);

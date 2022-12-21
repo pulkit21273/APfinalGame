@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.tankstars;
 
-public class PauseMenuGUI implements Screen {
+import java.io.*;
 
-    Texture PauseMenu;
+public class PauseMenuGUI implements Screen, Serializable {
+
+    transient private Texture PauseMenu;
     private final tankstars game;
-    private OrthographicCamera camera;
+    transient private OrthographicCamera camera;
     //public PauseMenu pausesc;
 
     public PauseMenuGUI(tankstars game) {
@@ -28,6 +30,42 @@ public class PauseMenuGUI implements Screen {
         game.themesound.play();
 
     }
+    public void serialize()
+    {
+        try
+        {
+            FileOutputStream fout = new FileOutputStream("savedgame.txt");
+            ObjectOutputStream out = new ObjectOutputStream(fout);
+            out.writeObject(game.gamesc);
+            out.close();
+            fout.close();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Texture getPauseMenu() {
+        return PauseMenu;
+    }
+
+    public void setPauseMenu(Texture pauseMenu) {
+        PauseMenu = pauseMenu;
+    }
+
+    public tankstars getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
     @Override
     public void show() {
 
@@ -46,11 +84,15 @@ public class PauseMenuGUI implements Screen {
             if (Gdx.input.getX()>=502 && Gdx.input.getX()<=784 && Gdx.input.getY()>=190 && Gdx.input.getY()<=275)
             {
                 game.themesound.stop();
-                //GameScreenGUI gamesc = new GameScreenGUI(game);
-                System.out.println(game);
-                System.out.println(game.gamesc);
                 game.setScreen(game.gamesc);
-//                System.out.println("Hemlo");
+
+            }
+            if (Gdx.input.getX()>=502 && Gdx.input.getX()<=784 && Gdx.input.getY()>=290 && Gdx.input.getY()<=375)
+            {
+                game.getLoadgame().savedgames.add(game.gamesc);
+                System.out.println(game.getLoadgame().savedgames);
+               serialize();
+
             }
             if (Gdx.input.getX()>=502 && Gdx.input.getX()<=784 && Gdx.input.getY()>=390 && Gdx.input.getY()<=475)
             {

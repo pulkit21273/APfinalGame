@@ -1,6 +1,7 @@
 package com.mygdx.tankstars.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,15 +12,114 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.tankstars;
 
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+
 import static java.lang.System.exit;
 
-public class HomePageGUI implements Screen {
+public class HomePageGUI implements Screen, Serializable {
 
-    Texture homeimg;
+    transient private Texture homeimg;
     private final tankstars game;
-    private OrthographicCamera camera;
+    transient private OrthographicCamera camera;
 
+    public Texture getHomeimg() {
+        return homeimg;
+    }
 
+    public void setHomeimg(Texture homeimg) {
+        this.homeimg = homeimg;
+    }
+
+    public tankstars getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+//    public void deserialize() throws IOException, ClassNotFoundException {
+//        FileInputStream fin = new FileInputStream("savedgame.txt");
+//        ObjectInputStream in = new ObjectInputStream(fin);
+//        GameScreenGUI recieved = (GameScreenGUI) in.readObject();
+////        System.out.println(recieved);
+////        System.out.println(recieved.getSelectedt1());
+////        System.out.println(recieved.getSelectedt1().getT1().getName());
+//        recieved.setCamera(camera);
+//        recieved.getGame().setBatch(new SpriteBatch());
+//        recieved.getGame().setThemesound(Gdx.audio.newMusic(Gdx.files.internal("mainmusic.mp3")));
+//
+//        recieved.setGameimage(new Texture("background.png"));
+//        recieved.setGroundimg(new Texture("groundgametexture.png"));
+//        recieved.setTank1wins(new Texture("win1.png"));
+//        recieved.setTank2wins(new Texture("win2.png"));
+//        recieved.setFirebutton(new Texture("firebutton.png"));
+//        recieved.setDot(new Texture("dot.png"));
+//        recieved.setFont(new BitmapFont());
+//        recieved.getPausesc().setCamera(camera);
+//        recieved.getPausesc().setPauseMenu(new Texture("pausemenu.png"));
+//        recieved.setTank1wins(new Texture("win1.png"));
+//        recieved.setTank2wins(new Texture("win2.png"));
+//        recieved.getSelectedt1().setCamera(camera);
+//        recieved.getSelectedt1().setChooset1(new Texture("choosetank1.png"));
+//        recieved.getSelectedt2().setCamera(camera);
+//        recieved.getSelectedt2().setChooset2(new Texture("choosetank2.png"));
+//        recieved.getGame().getHomepg().setCamera(camera);
+//        recieved.getGame().getHomepg().setHomeimg(new Texture("homescreen.png"));
+////        recieved.getL().setTankimage();
+//        if (recieved.getSelectedt1().getT1().getName().equals("Frost Tank"))
+//        {
+//            //recieved.getL().setTankimage(new Texture("Frosttank.png"));
+//           // recieved.getL().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//            recieved.getSelectedt1().getT1().setTankimage(new Texture("Frosttank.png"));
+//            Weapon w = new Weapon();
+//            w.setAssociatedtank(recieved.getSelectedt1().getT1());
+//            recieved.getSelectedt1().getT1().setCurrentweapon(w);
+//            recieved.getSelectedt1().getT1().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//
+//        }
+//        if (recieved.getL().getName().equals("Coalition"))
+//        {
+//            recieved.getL().setTankimage(new Texture("coalition.png"));
+//            recieved.getL().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//        }
+//        if (recieved.getL().getName().equals("Toxic"))
+//        {
+//            recieved.getL().setTankimage(new Texture("toxic.png"));
+//            recieved.getL().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//        }
+//        if (recieved.getSelectedt2().getT2().getName().equals("Frost Tank"))
+//        {
+////            recieved.getR().setTankimage(new Texture("Frosttankinv.png"));
+////            recieved.getR().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//            Weapon w = new Weapon();
+//            w.setAssociatedtank(recieved.getSelectedt2().getT2());
+//            recieved.getSelectedt2().getT2().setCurrentweapon(w);
+//            recieved.getSelectedt2().getT2().setTankimage(new Texture("Frosttankinv.png"));
+//            recieved.getSelectedt2().getT2().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//        }
+//        if (recieved.getR().getName().equals("Coalition"))
+//        {
+//            recieved.getR().setTankimage(new Texture("coalitioninv.png"));
+//            recieved.getR().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//        }
+//        if (recieved.getR().getName().equals("Toxic"))
+//        {
+//            recieved.getR().setTankimage(new Texture("toxicinv.png"));
+//            recieved.getR().getCurrentweapon().setWeaponimg(new Texture("fireball.png"));
+//        }
+//
+//
+//
+//        game.setScreen(recieved);
+//    }
     public HomePageGUI(tankstars game) {
         this.game = game;
         camera = new OrthographicCamera();
@@ -29,8 +129,8 @@ public class HomePageGUI implements Screen {
 
         game.themesound = Gdx.audio.newMusic(Gdx.files.internal("mainmusic.mp3"));
 
-//        game.themesound.setLooping(true);
-//        game.themesound.play();
+        game.themesound.setLooping(true);
+        game.themesound.play();
 
     }
     @Override
@@ -44,22 +144,32 @@ public class HomePageGUI implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(homeimg,0,0);
+        game.batch.draw(homeimg, 0, 0);
         game.batch.end();
 
-        if(Gdx.input.justTouched()){
-            if(Gdx.input.getX()>=705 && Gdx.input.getX()<=1170 && Gdx.input.getY()>=62 && Gdx.input.getY()<=162){
-            ChooseTank1GUI cht1 = new ChooseTank1GUI(game);
-            game.setScreen(cht1);
+        if (Gdx.input.justTouched()) {
+            if (Gdx.input.getX() >= 705 && Gdx.input.getX() <= 1170 && Gdx.input.getY() >= 62 && Gdx.input.getY() <= 162) {
+                ChooseTank1GUI cht1 = new ChooseTank1GUI(game);
+                game.setScreen(cht1);
             }
         }
-        if(Gdx.input.justTouched()){
-            if(Gdx.input.getX()>=705 && Gdx.input.getX()<=1170 && Gdx.input.getY()>=355 && Gdx.input.getY()<455){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+
+            System.out.println(game.getLoadgame().savedgames.get(0));
+
+            //game.setScreen(game.getLoadgame().savedgames.get(0));
+            game.setScreen(game.getLoadgame());
+
+            }
+
+        if (Gdx.input.justTouched()) {
+            if (Gdx.input.getX() >= 705 && Gdx.input.getX() <= 1170 && Gdx.input.getY() >= 355 && Gdx.input.getY() < 455) {
                 exit(1);
             }
         }
 
     }
+
 
     @Override
     public void resize(int width, int height) {

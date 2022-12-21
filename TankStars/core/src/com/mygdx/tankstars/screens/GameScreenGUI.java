@@ -13,11 +13,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.tankstars;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 
 
-class Ground{
+class Ground implements Serializable{
 
     private static Ground gen = null;
 
@@ -35,12 +37,71 @@ class Ground{
         return (int)y;
     }
 }
+class Airdrop extends GameElements implements Collision,Serializable{
 
-class Weapon implements Collision{
-    private Texture weaponimg = new Texture("fireball.png");
+    public Texture getDropimg() {
+        return dropimg;
+    }
+
+    public void setDropimg(Texture dropimg) {
+        this.dropimg = dropimg;
+    }
+
+    public Weapon getSpecialweapon() {
+        return specialweapon;
+    }
+
+    public void setSpecialweapon(Weapon specialweapon) {
+        this.specialweapon = specialweapon;
+    }
+
+    private Texture dropimg;
+    private Weapon specialweapon;
+
+    public Airdrop()
+    {
+        specialweapon = new Weapon();
+        specialweapon.setWeaponimg(new Texture("specialball.png"));
+        specialweapon.setDamage(40);
+    }
+    @Override
+    public boolean hasCollided(GameElements T, int dropx, int turn) {
+
+        Tank t = (Tank) T;
+
+//        if (turn == 1) {
+//            System.out.println("drop: "+dropx+" Tank: "+t.getX());
+            if (dropx == t.getX() ) {
+                System.out.println("Chalgya DROP!");
+                specialweapon.setAssociatedtank(t);
+                t.setCurrentweapon(specialweapon);
+                return true;
+            }
+//        }
+//        if (turn == 2) {
+////            System.out.println(dropx);
+////            System.out.println(t.getX());
+//            if (dropx == t.getX()) {
+//                System.out.println("Chalgya DROP!");
+//                specialweapon.setAssociatedtank(t);
+//                t.setCurrentweapon(specialweapon);
+//                return true;
+//            }
+//        }
+        return false;
+    }
+
+}
+class Weapon implements Collision,Serializable{
+    transient private Texture weaponimg = new Texture("fireball.png");
     private String name;
     private double maxvelocity = 20;
-    private int damage;
+    private int damage=20;
+
+    public void setWeaponimg(Texture weaponimg) {
+        this.weaponimg = weaponimg;
+    }
+
     private int damageradius;
 
     private Tank associatedtank;
@@ -99,7 +160,7 @@ class Weapon implements Collision{
                 othertank.setY(Ground.generateY(othertank.getX()));
                 if (othertank.getHealth()>0)
                 {
-                    othertank.setHealth(othertank.getHealth()-20);
+                    othertank.setHealth(othertank.getHealth()-damage);
                 }
 
 
@@ -111,7 +172,7 @@ class Weapon implements Collision{
                 othertank.setY(Ground.generateY(othertank.getX()));
                 if (othertank.getHealth()>0)
                 {
-                    othertank.setHealth(othertank.getHealth()-20);
+                    othertank.setHealth(othertank.getHealth()-damage);
                 }
 
                 return true;
@@ -142,9 +203,9 @@ interface Collision{
     public boolean hasCollided(GameElements g,int x,int y);
 }
 
-class Tank extends GameElements{
+class Tank extends GameElements implements Serializable{
     private tankstars game;
-    private Texture tankimage;
+    transient private Texture tankimage;
 
     public Texture getTankimage() {
         return tankimage;
@@ -328,7 +389,7 @@ class Tank extends GameElements{
 
 }
 
-abstract class GameElements{
+abstract class GameElements implements Serializable{
     int X;
     int Y;
 
@@ -348,11 +409,11 @@ abstract class GameElements{
         Y = y;
     }
 }
-public class GameScreenGUI implements Screen {
+public class GameScreenGUI implements Screen, Serializable {
 
-    private Texture gameimage;
-    private Texture firebutton;
-    private Texture dot;
+    transient private Texture gameimage;
+    transient private Texture firebutton;
+    transient private Texture dot;
 
     private int turn = 1;
 
@@ -360,25 +421,183 @@ public class GameScreenGUI implements Screen {
     private ChooseTank2GUI selectedt2;
 
     private ArrayList<GameElements> gameelements;
-    private BitmapFont font;
+    transient private BitmapFont font;
     private final tankstars game;
-    private OrthographicCamera camera;
+    transient private OrthographicCamera camera;
     public PauseMenuGUI pausesc;
 
     private Tank l;
 
     private Tank r;
 
-    private Texture ltank;
-    private Texture rtank;
-    private Texture groundimg;
-    private Texture tank1wins;
-    private Texture tank2wins;
-    private ShapeRenderer shape;
+    transient private Texture ltank;
+    transient private Texture rtank;
+    transient private Texture groundimg;
+    transient private Texture tank1wins;
+    transient private Texture tank2wins;
+//    private ShapeRenderer shape;
     private int i = 0;
     private int flag = 0;
+    private boolean dropflag;
+
+    public Texture getGameimage() {
+        return gameimage;
+    }
+
+    public void setGameimage(Texture gameimage) {
+        this.gameimage = gameimage;
+    }
+
+    public Texture getFirebutton() {
+        return firebutton;
+    }
+
+    public void setFirebutton(Texture firebutton) {
+        this.firebutton = firebutton;
+    }
+
+    public Texture getDot() {
+        return dot;
+    }
+
+    public void setDot(Texture dot) {
+        this.dot = dot;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public ChooseTank1GUI getSelectedt1() {
+        return selectedt1;
+    }
+
+    public void setSelectedt1(ChooseTank1GUI selectedt1) {
+        this.selectedt1 = selectedt1;
+    }
+
+    public ChooseTank2GUI getSelectedt2() {
+        return selectedt2;
+    }
+
+    public void setSelectedt2(ChooseTank2GUI selectedt2) {
+        this.selectedt2 = selectedt2;
+    }
+
+    public ArrayList<GameElements> getGameelements() {
+        return gameelements;
+    }
+
+    public void setGameelements(ArrayList<GameElements> gameelements) {
+        this.gameelements = gameelements;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public void setFont(BitmapFont font) {
+        this.font = font;
+    }
+
+    public tankstars getGame() {
+        return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public PauseMenuGUI getPausesc() {
+        return pausesc;
+    }
+
+    public void setPausesc(PauseMenuGUI pausesc) {
+        this.pausesc = pausesc;
+    }
+
+    public Tank getL() {
+        return l;
+    }
+
+    public void setL(Tank l) {
+        this.l = l;
+    }
+
+    public Tank getR() {
+        return r;
+    }
+
+    public void setR(Tank r) {
+        this.r = r;
+    }
+
+    public Texture getLtank() {
+        return ltank;
+    }
+
+    public void setLtank(Texture ltank) {
+        this.ltank = ltank;
+    }
+
+    public Texture getRtank() {
+        return rtank;
+    }
+
+    public void setRtank(Texture rtank) {
+        this.rtank = rtank;
+    }
+
+    public Texture getGroundimg() {
+        return groundimg;
+    }
+
+    public void setGroundimg(Texture groundimg) {
+        this.groundimg = groundimg;
+    }
+
+    public Texture getTank1wins() {
+        return tank1wins;
+    }
+
+    public void setTank1wins(Texture tank1wins) {
+        this.tank1wins = tank1wins;
+    }
+
+    public Texture getTank2wins() {
+        return tank2wins;
+    }
+
+    public void setTank2wins(Texture tank2wins) {
+        this.tank2wins = tank2wins;
+    }
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
     public GameScreenGUI(tankstars game, ChooseTank2GUI s2) {
+
         System.out.println("I am in Gamescreen");
         game.setGamesc(this);
         game.setChoosetank2gui(s2);
@@ -391,7 +610,7 @@ public class GameScreenGUI implements Screen {
         font = new BitmapFont();
         font.getData().setScale(1.5f);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        shape = new ShapeRenderer();
+//        shape = new ShapeRenderer();
         gameimage = new Texture("background.png");
         groundimg = new Texture("groundgametexture.png");
         tank1wins = new Texture("win1.png");
@@ -482,17 +701,17 @@ public class GameScreenGUI implements Screen {
             game.batch.draw(firebutton, 950, 20);
         }
 
-        if (r.getHealth()==0)
+        if (r.getHealth()<=0)
         {
-            System.out.println("The heal");
+
             game.batch.end();
             Tank1Wins t = new Tank1Wins(game);
             game.setScreen(t);
             game.batch.begin();
         }
-        if (l.getHealth()==0)
+        if (l.getHealth()<=0)
         {
-            System.out.println("The heal");
+
             game.batch.end();
             Tank2Wins t = new Tank2Wins(game);
             game.setScreen(t);
@@ -541,7 +760,7 @@ public class GameScreenGUI implements Screen {
                     l.fire(turn, r);
                     if (r.getHealth() == 0) {
                         flag = 1;
-                        //System.out.println("Tank1 Wins! Game Over!");
+
 
                     }
                 } catch (InterruptedException e) {
@@ -559,7 +778,8 @@ public class GameScreenGUI implements Screen {
                     turn = 1;
                 }
             }
-        } else if (turn == 2) {
+        }
+        else if (turn == 2) {
             r.aim2();
             if (r.getHealth()!=0 && l.getHealth()!=0) {
                 game.batch.draw(dot, r.getX() - 20 + 60, r.getCurrentweapon().generateTrajectoryY2(r.getX() - 20 + 60));
@@ -622,10 +842,34 @@ public class GameScreenGUI implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 //            if (Gdx.input.getX() >= 0 && Gdx.input.getX() <= 80 && Gdx.input.getY() >= 15 && Gdx.input.getY() <= 67)
                 game.batch.end();
+//            System.out.println(getSelectedt1());
+//            System.out.println(getSelectedt1().getT1());
+            //System.out.println(l);
+            //System.out.println(getSelectedt2().getT2());
+            //System.out.println(r);
                 pausesc = new PauseMenuGUI(game);
+
 
             game.setScreen(pausesc);
             game.batch.begin();
+        }
+        Airdrop drop = new Airdrop();
+        drop.setDropimg(new Texture("airdrop.png"));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T))
+        {
+            dropflag = true;
+
+        }
+        if(dropflag){
+            game.batch.draw(drop.getDropimg(),700,Ground.generateY(700));
+        }
+        if(drop.hasCollided(l,700,1)==true)
+        {
+            dropflag = false;
+        }
+        if(drop.hasCollided(r,700,2)==true)
+        {
+            dropflag = false;
         }
 
         game.batch.end();

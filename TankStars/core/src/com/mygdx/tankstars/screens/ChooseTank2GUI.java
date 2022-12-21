@@ -10,13 +10,41 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.tankstars;
 
-public class ChooseTank2GUI implements Screen{
+import java.io.Serial;
+import java.io.Serializable;
 
-    Texture chooset2;
+public class ChooseTank2GUI implements Screen, Serializable {
+
+    transient private Texture chooset2;
     private final tankstars game;
     private Tank t2;
     private ChooseTank1GUI s1;
-    private OrthographicCamera camera;
+
+    public Texture getChooset2() {
+        return chooset2;
+    }
+
+    public void setChooset2(Texture chooset2) {
+        this.chooset2 = chooset2;
+    }
+
+    public tankstars getGame() {
+        return game;
+    }
+
+    public void setS1(ChooseTank1GUI s1) {
+        this.s1 = s1;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    transient private OrthographicCamera camera;
 
     public ChooseTank1GUI getS1() {
         return s1;

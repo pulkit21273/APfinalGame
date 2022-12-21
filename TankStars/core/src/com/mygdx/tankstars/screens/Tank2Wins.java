@@ -10,9 +10,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankstars.tankstars;
 
 public class Tank2Wins implements Screen {
-    Texture img;
+    transient private Texture img;
     private final tankstars game;
-    private OrthographicCamera camera;
+    transient private OrthographicCamera camera;
     public Tank2Wins(tankstars game){
         this.game = game;
         camera = new OrthographicCamera();
